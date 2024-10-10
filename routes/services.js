@@ -18,10 +18,24 @@ const serviceSystem = protoDescriptor.Cafler.Api.InteropLibrary.ProductApi.Servi
 
 const client = new serviceSystem.ServiceManagerSystem('europe-logistics-cafler-development-gseahwh0c2cqh7e2.francecentral-01.azurewebsites.net:443', grpc.credentials.createSsl());
 
+const metadata = new grpc.Metadata();
+
+function addAuthToken(token) {
+    // Eliminar cualquier valor existente para "Authorization"
+    metadata.remove('Authorization');
+    // Agregar el nuevo token Bearer
+    metadata.add('Authorization', token);
+}
+
 router.post('/', async (req, res) => {
 
   const data = req.body;
   var resp = {};
+
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
 
   try {
 		const request = {
@@ -33,7 +47,7 @@ router.post('/', async (req, res) => {
 		};
 
 		const response = await new Promise((resolve,reject)=>{
-			const call = client.GetServicesOverview(request);
+			const call = client.GetServicesOverview(request, metadata);
 
 			call.on('data', (response) => {
 			  resp = response;
@@ -60,6 +74,11 @@ router.post('/add', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"zoneId":data.zoneId,
@@ -76,13 +95,14 @@ router.post('/add', async (req, res) => {
 			"serviceStartDate":data.serviceStartDate,
 			"serviceEndDate":data.serviceEndDate,
 			"comments":data.comments,
-			"bookedProducts":data.bookedProducts
+			"bookedProducts":data.bookedProducts,
+			"clientId":data.clientId
 		};
 
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.CreateService(request, (error, response) => {
+			client.CreateService(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -102,6 +122,11 @@ router.post('/update', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash":data.orderHash,
@@ -118,7 +143,7 @@ router.post('/update', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.UpdateOrder(request, (error, response) => {
+			client.UpdateOrder(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -138,6 +163,11 @@ router.post('/assing-provider', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash":data.orderHash,
@@ -148,7 +178,7 @@ router.post('/assing-provider', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.AssignProviderToProductInService(request, (error, response) => {
+			client.AssignProviderToProductInService(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -168,6 +198,11 @@ router.get('/details', async (req, res) => {
 
   const data = req.query;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash": data.orderHash
@@ -176,7 +211,7 @@ router.get('/details', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.GetServiceDetails(request, (error, response) => {
+			client.GetServiceDetails(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -196,6 +231,11 @@ router.get('/toppings', async (req, res) => {
 
   const data = req.query;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash": data.orderHash
@@ -204,7 +244,7 @@ router.get('/toppings', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.GetServiceToppings(request, (error, response) => {
+			client.GetServiceToppings(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -224,6 +264,11 @@ router.post('/assign-driver', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"driverId": data.driverId,
@@ -233,7 +278,7 @@ router.post('/assign-driver', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.AssignServiceToDriver(request, (error, response) => {
+			client.AssignServiceToDriver(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -253,6 +298,11 @@ router.post('/cancel', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash": data.orderHash,
@@ -263,7 +313,7 @@ router.post('/cancel', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.CancelService(request, (error, response) => {
+			client.CancelService(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -283,6 +333,11 @@ router.post('/update-contact', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash": data.orderHash,
@@ -299,7 +354,7 @@ router.post('/update-contact', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.UpdateContactInformation(request, (error, response) => {
+			client.UpdateContactInformation(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -319,6 +374,11 @@ router.post('/add-overdraft', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash": data.orderHash,
@@ -330,7 +390,7 @@ router.post('/add-overdraft', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.AddOverdraftToService(request, (error, response) => {
+			client.AddOverdraftToService(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -350,6 +410,11 @@ router.post('/add-topping', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash": data.orderHash,
@@ -360,7 +425,7 @@ router.post('/add-topping', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.AddToppingToService(request, (error, response) => {
+			client.AddToppingToService(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -380,6 +445,11 @@ router.post('/remove-topping', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash": data.orderHash,
@@ -389,7 +459,7 @@ router.post('/remove-topping', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.RemoveToppingFromService(request, (error, response) => {
+			client.RemoveToppingFromService(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -409,6 +479,11 @@ router.post('/update-status', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash": data.orderHash,
@@ -418,7 +493,7 @@ router.post('/update-status', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.UpdateOrderStatus(request, (error, response) => {
+			client.UpdateOrderStatus(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -438,6 +513,11 @@ router.post('/update-price', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash": data.orderHash,
@@ -448,7 +528,7 @@ router.post('/update-price', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.UpdateProductPrice(request, (error, response) => {
+			client.UpdateProductPrice(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {
@@ -468,6 +548,11 @@ router.post('/add-provider', async (req, res) => {
 
   const data = req.body;
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"orderHash": data.orderHash,
@@ -478,7 +563,7 @@ router.post('/add-provider', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			client.AssignProviderToProductInService(request, (error, response) => {
+			client.AssignProviderToProductInService(request, metadata, (error, response) => {
 			  if (error) {
 			    reject(error);
 			  } else {

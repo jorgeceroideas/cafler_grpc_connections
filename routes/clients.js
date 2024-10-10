@@ -60,6 +60,11 @@ router.post('/', async (req, res) => {
 
 router.post('/add', async (req, res) => {
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   const data = req.body;
 
   try {
@@ -84,7 +89,7 @@ router.post('/add', async (req, res) => {
     console.log(request);
 
     const response = await new Promise((resolve,reject)=>{
-      client.CreateNewClient(request, (error, response) => {
+      client.CreateNewClient(request, metadata, (error, response) => {
         if (error) {
           reject(error);
         } else {

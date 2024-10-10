@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
     console.log(metadata);
 
     const response = await new Promise((resolve,reject)=>{
-			const call = client.GetAlgorithmicExecutions(request);
+			const call = client.GetAlgorithmicExecutions(request,metadata);
 
 			call.on('data', (response) => {
 			  resp = response;

@@ -18,10 +18,24 @@ const serviceMapSystem = protoDescriptor.Cafler.Api.InteropLibrary.ProductApi.Se
 
 const client = new serviceMapSystem.ServiceManagerSystemMapModule('europe-logistics-cafler-development-gseahwh0c2cqh7e2.francecentral-01.azurewebsites.net:443', grpc.credentials.createSsl());
 
+const metadata = new grpc.Metadata();
+
+function addAuthToken(token) {
+    // Eliminar cualquier valor existente para "Authorization"
+    metadata.remove('Authorization');
+    // Agregar el nuevo token Bearer
+    metadata.add('Authorization', token);
+}
+
 router.post('/get-drivers', async (req, res) => {
 
   const data = req.body;
   let resps = [];
+
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
 
   try {
 		const request = {
@@ -30,7 +44,7 @@ router.post('/get-drivers', async (req, res) => {
 		};
 
 		const response = await new Promise((resolve,reject)=>{
-			const call = client.GetDriversForService(request);
+			const call = client.GetDriversForService(request,metadata);
 
 			call.on('data', (response) => {
 				resps.push(response);
@@ -58,6 +72,11 @@ router.post('/services-in-zone', async (req, res) => {
   const data = req.body;
   let resps = [];
 
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
   try {
 		const request = {
 			"zoneId": data.zoneId,
@@ -67,7 +86,7 @@ router.post('/services-in-zone', async (req, res) => {
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
-			const call = client.ListServicesInZone(request);
+			const call = client.ListServicesInZone(request,metadata);
 
 			call.on('data', (response) => {
 			  resps.push(response);
