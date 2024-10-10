@@ -18,7 +18,21 @@ const ganttSystem = protoDescriptor.Cafler.Api.InteropLibrary.ProductApi.Service
 
 const client = new ganttSystem.ServiceManagerSystemGanttModule('europe-logistics-cafler-development-gseahwh0c2cqh7e2.francecentral-01.azurewebsites.net:443', grpc.credentials.createSsl());
 
+const metadata = new grpc.Metadata();
+
+function addAuthToken(token) {
+    // Eliminar cualquier valor existente para "Authorization"
+    metadata.remove('Authorization');
+    // Agregar el nuevo token Bearer
+    metadata.add('Authorization', token);
+}
+
 router.post('/', async (req, res) => {
+
+	const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
 
   const data = req.body;
   var resp = {};
@@ -35,7 +49,7 @@ router.post('/', async (req, res) => {
 
 	  const response = await new Promise((resolve,reject)=>{
 
-	    const call = client.GenerateGanttData(request);
+	    const call = client.GenerateGanttData(request,metadata);
 
 	    // Manejar respuestas del servidor
 	    call.on('data', (response) => {
@@ -43,7 +57,7 @@ router.post('/', async (req, res) => {
 	    });
 
 	    call.on('error', (error) => {
-	      reject('Error al listar drivers',error);
+	      reject('Error al listar datos de gantt',error);
 	    });
 
 	    call.on('end', () => {

@@ -64,10 +64,13 @@ router.get('/', async (req, res) => {
 	    	resolve(resps);
 	      console.log('Stream ended');
 	    });
-	    /*// Finalizar el stream
-	    call.end();*/
+	    // Finalizar el stream
+	    call.end();
 		});
-		res.send(response);
+		const unifiedDrivers = response.reduce((acc, curr) => {
+		  return acc.concat(curr.drivers);
+		}, []);
+		res.send({ drivers: unifiedDrivers });
 
   } catch (error) {
     console.error('Error:', error);

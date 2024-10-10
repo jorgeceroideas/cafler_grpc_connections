@@ -63,7 +63,10 @@ router.post('/', async (req, res) => {
 			});
 		});
 		// res.send(resp);
-		res.send(response);
+		const unifiedServices = response.reduce((acc, curr) => {
+		  return acc.concat(curr.services);
+		}, []);
+		res.send({ services: unifiedServices });
   }
   catch (error) {
   	console.log(error);
@@ -577,6 +580,40 @@ router.post('/add-provider', async (req, res) => {
   catch (error) {
   	console.log(error);
     res.status(500).send('Error al agregar toppings al servicio');
+  }
+});
+
+router.post('/update-assigned-start-time', async (req, res) => {
+
+  const data = req.body;
+
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
+  try {
+		const request = {
+			"orderHash": data.orderHash,
+			"desiredAssignedStartTime": data.desiredAssignedStartTime,
+		};
+
+		console.log(request);
+
+		const response = await new Promise((resolve,reject)=>{
+			client.UpdateAssignedStartTime(request, metadata, (error, response) => {
+			  if (error) {
+			    reject(error);
+			  } else {
+			    resolve(response);
+			  }
+			});
+		});
+		res.send(response);
+  }
+  catch (error) {
+  	console.log(error);
+    res.status(500).send('Error al actualizar la hora de asignacion');
   }
 });
 
