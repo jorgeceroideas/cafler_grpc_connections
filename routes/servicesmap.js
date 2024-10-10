@@ -101,7 +101,7 @@ router.post('/services-in-zone', async (req, res) => {
 			  console.log('Stream ended');
 			});
 		});
-		res.send(resps);
+		res.send(response);
   }
   catch (error) {
   	console.log(error);

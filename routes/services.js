@@ -30,7 +30,7 @@ function addAuthToken(token) {
 router.post('/', async (req, res) => {
 
   const data = req.body;
-  var resp = {};
+  var resps = [];
 
   const bearer = req.headers.authorization;
   const token = req.headers.authorization?.split(' ')[1];
@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
 			const call = client.GetServicesOverview(request, metadata);
 
 			call.on('data', (response) => {
-			  resp = response;
+			  resps.push(response);
 			});
 
 			call.on('error', (error) => {
@@ -58,11 +58,12 @@ router.post('/', async (req, res) => {
 			});
 
 			call.on('end', () => {
-				resolve(resp);
+				resolve(resps);
 			  console.log('Stream ended');
 			});
 		});
-		res.send(resp);
+		// res.send(resp);
+		res.send(response);
   }
   catch (error) {
   	console.log(error);

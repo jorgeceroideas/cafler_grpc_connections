@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
   addAuthToken(bearer);
 
 	const data = req.query;
-	var resp = {};
+	var resps = [];
 
 	try {
 
@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
 
 	    // Manejar respuestas del servidor
 	    call.on('data', (response) => {
-	      resp = response;
+	      resps.push(response);
 	    });
 
 	    call.on('error', (error) => {
@@ -61,14 +61,13 @@ router.get('/', async (req, res) => {
 	    });
 
 	    call.on('end', () => {
-	    	resolve(resp);
+	    	resolve(resps);
 	      console.log('Stream ended');
 	    });
-
-	    // Finalizar el stream
-	    call.end();
+	    /*// Finalizar el stream
+	    call.end();*/
 		});
-		res.send(resp);
+		res.send(response);
 
   } catch (error) {
     console.error('Error:', error);
