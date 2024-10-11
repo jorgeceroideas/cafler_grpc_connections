@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/appsvc/node:20-lts
+FROM mcr.microsoft.com/appsvc/node:20-alpine
 
 ENTRYPOINT ["pm2", "start", "--no-daemon", "/opt/startup/default-static-site.js"]
 
