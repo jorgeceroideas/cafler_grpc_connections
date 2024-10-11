@@ -1,20 +1,17 @@
-# Usa una imagen base oficial de Node.js
-FROM node:20
+FROM mcr.microsoft.com/appsvc/node:20-lts
 
-# Establece el directorio de trabajo en el contenedor
+ENTRYPOINT ["pm2", "start", "--no-daemon", "/opt/startup/default-static-site.js"]\
+
 WORKDIR /usr/src/app
 
-# Copia los archivos package.json y package-lock.json al directorio de trabajo
 COPY package*.json ./
 
-# Instala las dependencias de la aplicación
 RUN npm install
 
-# Copia el resto de los archivos de la aplicación al directorio de trabajo
 COPY . .
 
-# Expone el puerto en el que la aplicación estará escuchando
-EXPOSE 3000
+ENV HOST 0.0.0.0
+ENV PORT 8080
+EXPOSE 8080
 
-# Define el comando para ejecutar la aplicación
 CMD ["node", "app.js"]
