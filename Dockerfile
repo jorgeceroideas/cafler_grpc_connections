@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/appsvc/node:20-lts
 
-ENTRYPOINT ["pm2", "start", "--no-daemon", "/opt/startup/default-static-site.js"]\
+ENTRYPOINT ["pm2", "start", "--no-daemon", "/opt/startup/default-static-site.js"]
 
 WORKDIR /usr/src/app
 
