@@ -75,7 +75,7 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.error('Error:', error);
     if (error == '10 Crash') {
-    	res.send(resp);
+    	res.send(resps);
     }else{
     	res.status(500).send('Error al listar drivers');
     }
