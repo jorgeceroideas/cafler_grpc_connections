@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/appsvc/node:20-alpine
+FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
