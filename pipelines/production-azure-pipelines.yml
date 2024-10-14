@@ -10,9 +10,9 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '4e6427c3-4d1c-4d89-8e17-87ed8dc5f898'
+  dockerRegistryServiceConnection: 'a76d969e-da6e-471e-9d7f-d3ae62b7315e'
   imageRepository: 'logisticsmanagementproxy'
-  containerRegistry: 'acrcaflerdevelopmentmain.azurecr.io'
+  containerRegistry: 'eucaflermain.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
 
