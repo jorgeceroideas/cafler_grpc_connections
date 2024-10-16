@@ -16,7 +16,7 @@ const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
 const health = protoDescriptor.grpc.health.v1;
 
-const client = new health.Health('europe-logistics-cafler-development-gseahwh0c2cqh7e2.francecentral-01.azurewebsites.net:443', grpc.credentials.createSsl());
+const client = new health.Health(`${process.env.GRPC_URL}`, grpc.credentials.createSsl());
 
 router.post('/check', async (req, res) => {
   try {

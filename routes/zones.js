@@ -16,7 +16,8 @@ const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
 const zonesSystem = protoDescriptor.Cafler.Api.InteropLibrary.ProductApi.ZonesSystem;
 
-const client = new zonesSystem.ZoneSystem('europe-logistics-cafler-development-gseahwh0c2cqh7e2.francecentral-01.azurewebsites.net:443', grpc.credentials.createSsl());
+
+const client = new zonesSystem.ZoneSystem(`${process.env.GRPC_URL}`, grpc.credentials.createSsl());
 
 const metadata = new grpc.Metadata();
 
@@ -50,6 +51,7 @@ router.get('/', async (req, res) => {
   	console.log(error);
     res.status(500).send('Error al listar las zonas');
   }
+  res.status(500).send('ok');
 });
 
 module.exports = router;

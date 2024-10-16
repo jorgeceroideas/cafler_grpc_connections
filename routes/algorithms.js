@@ -16,7 +16,7 @@ const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
 const algorithmSystem = protoDescriptor.Cafler.Api.InteropLibrary.ProductApi.AlgorithmSystem;
 
-const client = new algorithmSystem.AlgorithmSystem('europe-logistics-cafler-development-gseahwh0c2cqh7e2.francecentral-01.azurewebsites.net:443', grpc.credentials.createSsl());
+const client = new algorithmSystem.AlgorithmSystem(`${process.env.GRPC_URL}`, grpc.credentials.createSsl());
 
 const metadata = new grpc.Metadata();
 

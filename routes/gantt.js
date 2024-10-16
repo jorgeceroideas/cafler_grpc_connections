@@ -16,7 +16,7 @@ const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
 const ganttSystem = protoDescriptor.Cafler.Api.InteropLibrary.ProductApi.ServiceManagerSystem;
 
-const client = new ganttSystem.ServiceManagerSystemGanttModule('europe-logistics-cafler-development-gseahwh0c2cqh7e2.francecentral-01.azurewebsites.net:443', grpc.credentials.createSsl());
+const client = new ganttSystem.ServiceManagerSystemGanttModule(`${process.env.GRPC_URL}`, grpc.credentials.createSsl());
 
 const metadata = new grpc.Metadata();
 

@@ -6,6 +6,14 @@ const fs = require('fs');
 const app = express();
 const port = 3000;
 
+const dotenv = require('dotenv');
+const path = require('path');
+
+const envFile = process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev';
+
+// Cargar el archivo .env correspondiente
+dotenv.config({ path: path.resolve(__dirname, envFile) });
+
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,6 +53,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const port = 3000;
+
+const dotenv = require('dotenv');
+const path = require('path');
+
+const envFile = process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev';
+
+// Cargar el archivo .env correspondiente
+dotenv.config({ path: path.resolve(__dirname, envFile) });
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));

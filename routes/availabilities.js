@@ -16,7 +16,7 @@ const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
 const availabilitySystem = protoDescriptor.Cafler.Api.InteropLibrary.ProductApi.AvailabilitySystem;
 
-const client = new availabilitySystem.AvailabilitySystem('europe-logistics-cafler-development-gseahwh0c2cqh7e2.francecentral-01.azurewebsites.net:443', grpc.credentials.createSsl());
+const client = new availabilitySystem.AvailabilitySystem(`${process.env.GRPC_URL}`, grpc.credentials.createSsl());
 
 router.post('/', async (req, res) => {
 
