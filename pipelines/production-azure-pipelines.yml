@@ -23,6 +23,11 @@ stages:
 - stage: Build
   displayName: Build and push stage
   jobs:
+
+    # Copy the Production Dockerfile
+  - bash: 'cp $(System.DefaultWorkingDirectory)/Dockerfile.prod $(System.DefaultWorkingDirectory)/Dockerfile'
+    displayName: 'Copy the development production'
+
   - job: Build
     displayName: Build
 
