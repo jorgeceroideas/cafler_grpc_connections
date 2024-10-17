@@ -23,13 +23,20 @@ stages:
 - stage: Build
   displayName: Build and push stage
   jobs:
+
   - job: Build
     displayName: Build
-
     pool:
       vmImage: $(vmImageName)
-
     steps:
+    
+    # Copy the Production Dockerfile
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          cp $(System.DefaultWorkingDirectory)/Dockerfile.prod $(System.DefaultWorkingDirectory)/Dockerfile
+      
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
