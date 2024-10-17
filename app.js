@@ -62,7 +62,16 @@ const envFile = process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev'
 // Cargar el archivo .env correspondiente
 dotenv.config({ path: path.resolve(__dirname, envFile) });
 
-app.use(cors());
+function setCorsHeaders(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+}
+
+const corsOptions = {origin: '*'}
+
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -85,6 +94,8 @@ app.use('/services-map', servicesmapRouter);
 app.use('/availabilities', availabilitiesRouter);
 app.use('/clients', clientsRouter);
 app.use('/algorithms', algorithmsRouter);
+
+app.use(setCorsHeaders);
 
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);

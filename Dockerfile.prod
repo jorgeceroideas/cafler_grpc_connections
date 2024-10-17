@@ -9,6 +9,7 @@ RUN npm install --only=production
 
 COPY . .
 
+ENV GRPC_URL=wapi-europe-cafler-logistics-aefpfscuhygqdwgg.francecentral-01.azurewebsites.net:443
 ENV HOST=0.0.0.0
 ENV PORT=3000
 

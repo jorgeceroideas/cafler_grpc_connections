@@ -51,7 +51,6 @@ router.get('/', async (req, res) => {
   	console.log(error);
     res.status(500).send('Error al listar las zonas');
   }
-  res.status(500).send('ok');
 });
 
 module.exports = router;
