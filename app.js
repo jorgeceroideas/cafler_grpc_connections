@@ -57,10 +57,12 @@ const port = 3000;
 const dotenv = require('dotenv');
 const path = require('path');
 
-const envFile = process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev';
+let envFile = (process.env.NODE_ENV.indexOf('prod') != -1 ? '.env.prod' : '.env.dev');
+console.log(envFile);
 
 // Cargar el archivo .env correspondiente
 dotenv.config({ path: path.resolve(__dirname, envFile) });
+
 
 function setCorsHeaders(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
