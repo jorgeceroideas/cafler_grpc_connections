@@ -57,7 +57,7 @@ const port = 3000;
 const dotenv = require('dotenv');
 const path = require('path');
 
-let envFile = (process.env.NODE_ENV.indexOf('prod') != -1 ? '.env.prod' : '.env.dev');
+let envFile = (process.env.NODE_ENV.indexOf('production') != -1 ? '.env.prod' : '.env.dev');
 console.log(envFile);
 
 // Cargar el archivo .env correspondiente
