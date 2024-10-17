@@ -23,11 +23,6 @@ stages:
 - stage: Build
   displayName: Build and push stage
   jobs:
-
-    # Copy the Development Dockerfile
-  - bash: 'cp $(System.DefaultWorkingDirectory)/Dockerfile.dev $(System.DefaultWorkingDirectory)/Dockerfile'
-    displayName: 'Copy the development dockerfile'
-
   - job: Build
     displayName: Build
 
@@ -35,6 +30,14 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
+
+    # Copy the Development Dockerfile
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          cp $(System.DefaultWorkingDirectory)/Dockerfile.dev $(System.DefaultWorkingDirectory)/Dockerfile
+
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
