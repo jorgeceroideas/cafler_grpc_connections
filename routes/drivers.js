@@ -77,7 +77,7 @@ router.get('/', async (req, res) => {
     if (error == '10 Crash') {
     	res.send(resps);
     }else{
-    	res.status(500).send('Error al listar drivers');
+    	res.status(500).send('Error al listar drivers'+JSON.stringify(error));
     }
   }
 
@@ -127,7 +127,56 @@ router.post('/add-driver', async (req, res) => {
   }
   catch (error) {
   	console.log(error);
-    res.status(500).send('Error al guardar driver');
+    res.status(500).send('Error al guardar driver'+JSON.stringify(error));
+  }
+});
+
+router.post('/update-driver', async (req, res) => {
+
+  const data = req.body;
+
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
+  try {
+		const request = {
+		  zoneId: data.zoneId,
+		  firstName: data.firstName,
+		  lastName: data.lastName,
+		  operatorType: data.operatorType,
+		  isInternal: data.isInternal,
+		  startAddress: data.startAddress,
+		  startAddressDetail: data.startAddressDetail,
+		  startLatitude: data.startLatitude,
+		  startLongitude: data.startLongitude,
+		  workdayStartTime: data.workdayStartTime,
+		  workdayEndTime: data.workdayEndTime,
+		  allowedMotorcycleServiceType: data.allowedMotorcycleServiceType,
+		  isActiveUser: data.isActiveUser,
+		  mainEmail: data.mainEmail,
+		  alternativeEmail: data.alternativeEmail,
+		  phoneNumber: data.phoneNumber,
+		  alternativePhoneNumber: data.alternativePhoneNumber,
+			driverId: data.alternativePhoneNumber
+		};
+
+		const response = await new Promise((resolve,reject)=>{
+			client.UpdateDriver(request, metadata, (error, response) => {
+			  if (error) {
+			    reject(error);
+			  } else {
+			    resolve(response);
+			  }
+			});
+		});
+		res.send(response);
+
+  }
+  catch (error) {
+  	console.log(error);
+    res.status(500).send('Error al editar driver'+JSON.stringify(error));
   }
 });
 
