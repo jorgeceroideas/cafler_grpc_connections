@@ -159,7 +159,7 @@ router.post('/update-driver', async (req, res) => {
 		  alternativeEmail: data.alternativeEmail,
 		  phoneNumber: data.phoneNumber,
 		  alternativePhoneNumber: data.alternativePhoneNumber,
-			driverId: data.alternativePhoneNumber
+			driverId: data.driverId
 		};
 
 		const response = await new Promise((resolve,reject)=>{
