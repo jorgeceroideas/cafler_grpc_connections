@@ -617,4 +617,38 @@ router.post('/update-assigned-start-time', async (req, res) => {
   }
 });
 
+router.post('/add-internal-comment', async (req, res) => {
+
+  const data = req.body;
+
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
+  try {
+		const request = {
+			"orderHash": data.orderHash,
+			"message": data.message,
+		};
+
+		console.log(request);
+
+		const response = await new Promise((resolve,reject)=>{
+			client.AddInternalCommentToService(request, metadata, (error, response) => {
+			  if (error) {
+			    reject(error);
+			  } else {
+			    resolve(response);
+			  }
+			});
+		});
+		res.send(response);
+  }
+  catch (error) {
+  	console.log(error);
+    res.status(500).send('Error al agregar comentario interno');
+  }
+});
+
 module.exports = router;
