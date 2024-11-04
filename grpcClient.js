@@ -87,7 +87,7 @@ async function describeMethod(serviceName, methodName) {
 
 }
 
-// listAndDescribeServices(); 
+listAndDescribeServices(); 
 
 module.exports = {
   listAndDescribeServices,
