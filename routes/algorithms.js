@@ -35,18 +35,18 @@ router.get('/', async (req, res) => {
   addAuthToken(bearer);
 
   const data = req.body;
-  var resp = {};
+  var resps = [];
 
   try {
     const request = {};
 
     console.log(metadata);
 
-    const response = await new Promise((resolve,reject)=>{
+		const response = await new Promise((resolve,reject)=>{
 			const call = client.GetAlgorithmicExecutions(request,metadata);
 
 			call.on('data', (response) => {
-			  resp = response;
+			  resps.push(response);
 			});
 
 			call.on('error', (error) => {
@@ -54,11 +54,15 @@ router.get('/', async (req, res) => {
 			});
 
 			call.on('end', () => {
-				resolve(resp);
+				resolve(resps);
 			  console.log('Stream ended');
 			});
 		});
-		res.send(resp);
+		// res.send(resp);
+		const unifiedAlgorithms = response.reduce((acc, curr) => {
+		  return acc.concat(curr.executionModels);
+		}, []);
+		res.send({ executionModels: unifiedAlgorithms });
   }
   catch (error) {
     console.log(error);
