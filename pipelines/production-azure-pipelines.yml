@@ -47,3 +47,9 @@ stages:
         tags: |
           $(tag)
           production
+    
+    - task: AzureAppServiceManage@0
+      inputs:
+        azureSubscription: 'Europe(c7e9aa45-f2cc-46f1-aa6c-28723ad9409a)'
+        Action: 'Restart Azure App Service'
+        WebAppName: 'wapi-ceroideas-proxy-container'

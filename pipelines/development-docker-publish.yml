@@ -48,3 +48,9 @@ stages:
         tags: |
           $(tag)
           development
+
+    - task: AzureAppServiceManage@0
+      inputs:
+        azureSubscription: 'Development Global(c3d319ae-d334-4789-bd83-328045abeb78)'
+        Action: 'Restart Azure App Service'
+        WebAppName: 'wapi-ceroideas-proxy-development-container'
