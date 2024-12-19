@@ -596,12 +596,12 @@ router.post('/update-assigned-start-time', async (req, res) => {
 
   try {
 		const request = {
-			"nodeId": data.orderHash,
-			"orderHash": data.orderHash,
+			"desiredAssignedStartTime": data.desiredAssignedStartTime,
 			"desiredAssignedEndTime": data.desiredAssignedEndTime,
-			"desiredAssignedStartTime": data.desiredAssignedStartTime
+			"nodeId": data.nodeId,
+			"orderHash": data.orderHash
 		};
-
+		
 		console.log(request);
 
 		const response = await new Promise((resolve,reject)=>{
