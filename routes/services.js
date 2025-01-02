@@ -493,6 +493,7 @@ router.post('/update-status', async (req, res) => {
   try {
 		const request = {
 			"orderHash": data.orderHash,
+			"nodeId": data.nodeId,
 			"desiredStatus": data.desiredStatus
 		};
 
