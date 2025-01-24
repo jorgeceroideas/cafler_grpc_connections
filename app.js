@@ -48,6 +48,8 @@ https.createServer(options, app).listen(port, () => {
   console.log(`Servidor escuchando en https://localhost:${port}`);
 });*/
 
+console.log('Probando');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
