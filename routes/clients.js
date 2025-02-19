@@ -54,6 +54,37 @@ router.post('/', async (req, res) => {
   }
   catch (error) {
     console.log(error);
+    res.status(500).send('Error al listar clientes simplificado'+JSON.stringify(error));
+  }
+});
+
+router.post('/get', async (req, res) => {
+
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
+  const data = req.body;
+
+  try {
+    const request = {};
+
+    console.log(metadata);
+
+    const response = await new Promise((resolve,reject)=>{
+      client.GetAllClients(request, metadata, (error, response) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(response);
+        }
+      });
+    });
+    res.send(response);
+  }
+  catch (error) {
+    console.log(error);
     res.status(500).send('Error al listar clientes'+JSON.stringify(error));
   }
 });
