@@ -76,4 +76,53 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.post('/block', async (req, res) => {
+
+	const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
+  const data = req.body;
+  var resp = {};
+
+  try {
+	  
+	  const request = {
+			orderHash: data.orderHash,
+			nodeId: data.nodeId,
+			desiredBlockState: data.desiredBlockState
+	  }
+
+	  console.log(request);
+
+	  const response = await new Promise((resolve,reject)=>{
+
+	    const call = client.BlockNodeForDriverReasignation(request,metadata);
+
+	    // Manejar respuestas del servidor
+	    call.on('data', (response) => {
+	    	resp = response;
+	    });
+
+	    call.on('error', (error) => {
+	      reject('Error al bloquear el nodo',error);
+	    });
+
+	    call.on('end', () => {
+	    	resolve(resp);
+	      console.log('Stream ended');
+	    });
+
+	    // Finalizar el stream
+	    // call.end();
+		});
+  	res.send(response);
+  }
+  catch (error) {
+  	console.log(error);
+    res.status(500).send('Error al bloquear el nodo');
+  }
+});
+
 module.exports = router;
