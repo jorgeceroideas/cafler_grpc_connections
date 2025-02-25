@@ -690,4 +690,39 @@ router.post('/send-messages-for-confirm-services', async (req, res) => {
   }
 });
 
+router.post('/block-node', async (req, res) => {
+
+  const data = req.body;
+
+  const bearer = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+
+  addAuthToken(bearer);
+
+  try {
+		const request = {
+			orderHash: data.orderHash,
+			nodeId: data.nodeId,
+			desiredBlockState: data.desiredBlockState
+	  }
+
+		console.log(request);
+
+		const response = await new Promise((resolve,reject)=>{
+			client.BlockNodeForDriverReasignation(request, metadata, (error, response) => {
+			  if (error) {
+			    reject(error);
+			  } else {
+			    resolve(response);
+			  }
+			});
+		});
+		res.send(response);
+  }
+  catch (error) {
+  	console.log(error);
+    res.status(500).send('Error al confirmar servicios');
+  }
+});
+
 module.exports = router;
