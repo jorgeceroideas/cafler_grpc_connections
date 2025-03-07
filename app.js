@@ -87,7 +87,7 @@ const servicesmapRouter = require('./routes/servicesmap');
 const availabilitiesRouter = require('./routes/availabilities');
 const clientsRouter = require('./routes/clients');
 const algorithmsRouter = require('./routes/algorithms');
-// const generalClientsRouter = require('./routes/general_clients');
+const generalClientsRouter = require('./routes/general_clients');
 
 app.use('/drivers', driverRouter);
 app.use('/zones', zonesRouter);
@@ -98,7 +98,7 @@ app.use('/services-map', servicesmapRouter);
 app.use('/availabilities', availabilitiesRouter);
 app.use('/clients', clientsRouter);
 app.use('/algorithms', algorithmsRouter);
-// app.use('/general_clients', generalClientsRouter);
+app.use('/general_clients', generalClientsRouter);
 
 app.use(setCorsHeaders);
 
